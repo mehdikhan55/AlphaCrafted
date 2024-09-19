@@ -5,16 +5,16 @@ import toast from 'react-hot-toast'
 
 const History = () => {
     const[resumes, setResumes] = useState([])
-    const[resumesToShow,setResumesToShow] = useState([])
     const[loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchResumes = async () => {
             try {
-                setLoading(true)
-                const res = await fetch('/api/history')
+                const res = await fetch('/api/history', { cache: "no-store" });  // Disable caching here
                 const data = await res.json()
-                setResumes(data)
+                console.log('Fetched data:', data);  // Log fetched data
+                setResumes(data);  // Set the resumes state
+                console.log('resumes fetched:', resumes);
                
             }catch (error) {
                 console.log(error)
@@ -27,12 +27,7 @@ const History = () => {
         fetchResumes();
     }, []);
 
-    useEffect(() => {
-        if (resumes.length > 0) {
-            console.log('resumes fetched')
-            setResumesToShow(resumes)
-        }
-    }, [resumes])
+   
 
 
     return (
@@ -48,7 +43,7 @@ const History = () => {
             :
             (
                 <div className="py-5 border-t-2 border-t-slate-300 max-w-7xl pt-4 mx-auto grid grid-cols-2 items-start lg:grid-cols-3 px-5">
-                {resumesToShow.map((resume) => {
+                {resumes.map((resume) => {
                     //make a card
                     return (
                         <Link key={resume._id} href={`/resume-preview/${resume._id}`} target="_blank" >
