@@ -14,6 +14,7 @@ const History = () => {
                 const res = await fetch('/api/history')
                 const data = await res.json()
                 setResumes(data)
+                console.log('resume fetched: ', resumes);
             }catch (error) {
                 console.log(error)
                 toast.error('Failed to fetch resumes')
