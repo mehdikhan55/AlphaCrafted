@@ -12,9 +12,9 @@ const History = () => {
             try {
                 const res = await fetch('/api/history', { cache: "no-store" });  // Disable caching here
                 const data = await res.json()
-                console.log('Fetched data:', data);  // Log fetched data
+            
                 setResumes(data);  // Set the resumes state
-                console.log('resumes fetched:', resumes);
+                
                
             }catch (error) {
                 console.log(error)
