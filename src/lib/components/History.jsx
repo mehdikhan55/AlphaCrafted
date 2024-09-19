@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 const History = () => {
-    const [resumes, setResumes] = useState([])
-    const [loading, setLoading] = useState(true)
+    const[resumes, setResumes] = useState([])
+    const[resumesToShow,setResumesToShow] = useState([])
+    const[loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchResumes = async () => {
@@ -29,6 +30,7 @@ const History = () => {
     useEffect(() => {
         if (resumes.length > 0) {
             console.log('resumes fetched')
+            setResumesToShow(resumes)
         }
     }, [resumes])
 
@@ -46,11 +48,11 @@ const History = () => {
             :
             (
                 <div className="py-5 border-t-2 border-t-slate-300 max-w-7xl pt-4 mx-auto grid grid-cols-2 items-start lg:grid-cols-3 px-5">
-                {resumes.map((resume) => {
+                {resumesToShow.map((resume) => {
                     //make a card
                     return (
-                        <Link href={`/resume-preview/${resume._id}`} target="_blank" >
-                            <div key={resume._id} className="bg-white shadow-xl rounded-lg mx-4 my-4 border border-slate-200">
+                        <Link key={resume._id} href={`/resume-preview/${resume._id}`} target="_blank" >
+                            <div  className="bg-white shadow-xl rounded-lg mx-4 my-4 border border-slate-200">
                                 <div className="h-40 overflow-hidden">
                                 </div>
                                 <div className="p-6">
