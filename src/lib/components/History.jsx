@@ -14,7 +14,7 @@ const History = () => {
                 const res = await fetch('/api/history')
                 const data = await res.json()
                 setResumes(data)
-                console.log('resume fetched: ', resumes);
+               
             }catch (error) {
                 console.log(error)
                 toast.error('Failed to fetch resumes')
@@ -25,6 +25,13 @@ const History = () => {
         }
         fetchResumes();
     }, []);
+
+    useEffect(() => {
+        if (resumes.length > 0) {
+            console.log('resumes fetched')
+        }
+    }, [resumes])
+
 
     return (
         <>
