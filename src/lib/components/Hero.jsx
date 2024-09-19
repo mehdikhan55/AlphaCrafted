@@ -12,7 +12,7 @@ const Hero = () => {
       <div className="flex flex-col h-full px-6 justify-center items-center pb-4">
             <div >
             <h3 className='font-bold text-lg'>Fast. Easy. Effective.</h3>
-            <h2 className='font-bold md:text-5xl text-4xl'>Zety. The Best CV Maker Online.</h2>
+            <h2 className='font-bold md:text-5xl text-4xl'>Alpha! The Best CV Maker Online.</h2>
             <p className='mb-4'>If a sheet of paper represents your entire work life, personality, and skills, it better be a pretty amazing piece of paper — Let Zety do the heavy lifting.</p>
             <Button  title='Create Your Resume Now' path='/generate'/>
             </div>
