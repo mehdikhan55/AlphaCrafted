@@ -10,11 +10,12 @@ const History = () => {
     useEffect(() => {
         const fetchResumes = async () => {
             try {
+                setLoading(true);
                 const res = await fetch('/api/history', { cache: "no-store" });  // Disable caching here
                 const data = await res.json()
-                // console.log('fetched data: ', data);
+                console.log('fetched data: ', data);
                 setResumes(data);  // Set the resumes state
-                // console.log('resuems fetched: ', resumes);
+                console.log('resuems fetched: ', resumes);
             } catch (error) {
                 console.log(error)
                 toast.error('Failed to fetch resumes');
@@ -28,7 +29,7 @@ const History = () => {
     useEffect(() => {
         if (resumes.length > 0) {
             setLoading(false);
-            // console.log('second use effect resumes: ', resumes);
+            console.log('second use effect resumes: ', resumes);
         }
     }, [resumes]);
 
