@@ -9,7 +9,7 @@ const History = () => {
     const [loading, setLoading] = useState(true)
 
     const fetchRes = async () => {
-        const res = await axios.get('http://localhost:3000/api/history', { headers: { 'Cache-Control': 'no-cache' } });
+        const res = await axios.get('/api/history', { headers: { 'Cache-Control': 'no-cache' } });
         const data = res;
         return data.data;
     }
