@@ -9,36 +9,32 @@ const History = () => {
     const [loading, setLoading] = useState(true)
 
     const fetchRes = async () => {
-        const res = await axios.get('/api/history', { headers: { 'Cache-Control': 'no-cache' } });
-        const data = res;
-        return data.data;
+
     }
 
-    useEffect(() => {
-        const fetchResumes = async () => {
-            try {
-                setLoading(true);
-                //make axios request with no cache
-                const data = await fetchRes();
-                console.log('fetched data: ', data);
-                setResumes(data);  // Set the resumes state
-                console.log('resuems fetched: ', resumes);
-            } catch (error) {
-                console.log(error)
-                toast.error('Failed to fetch resumes');
-                setLoading(false);
-            }
+    const fetchResumes = async () => {
+        try {
+            setLoading(true);
+            const res = await axios.get('/api/history', { headers: { 'Cache-Control': 'no-cache' } });
+            const data = res.data;
+            setResumes(data);  // Set the fetched resumes
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to fetch resumes');
+        } finally {
+            setLoading(false);  // Make sure to stop loading after fetching
         }
+    };
+
+    useEffect(() => {
         fetchResumes();
     }, []);
 
 
     useEffect(() => {
-        if (resumes.length > 0) {
-            setLoading(false);
-            console.log('second use effect resumes: ', resumes);
-        }
+        console.log('Updated resumes: ', resumes);
     }, [resumes]);
+
 
 
     return (
@@ -53,23 +49,27 @@ const History = () => {
                 )
                     :
                     (
-                        <div className="py-5 border-t-2 border-t-slate-300 max-w-7xl pt-4 mx-auto grid grid-cols-2 items-start lg:grid-cols-3 px-5">
-                            {resumes.map((resume) => {
-                                //make a card
-                                return (
-                                    <Link key={resume._id} href={`/resume-preview/${resume._id}`} target="_blank" >
-                                        <div className="bg-white shadow-xl rounded-lg mx-4 my-4 border border-slate-200">
-                                            <div className="h-40 overflow-hidden">
+                        <>
+                            <button onClick={fetchResumes} className="border-t-2 border-t-slate-300 pt-4  bg-blue-500 text-white px-2 py-2 rounded">  Refresh Resumes </button>
+
+                            <div className="py-5  max-w-7xl pt-4 mx-auto grid grid-cols-2 items-start lg:grid-cols-3 px-5">
+                                {resumes.map((resume) => {
+                                    //make a card
+                                    return (
+                                        <Link key={resume._id} href={`/resume-preview/${resume._id}`} target="_blank" >
+                                            <div className="bg-white shadow-xl rounded-lg mx-4 my-4 border border-slate-200">
+                                                <div className="h-40 overflow-hidden">
+                                                </div>
+                                                <div className="p-6">
+                                                    <h2 className="text-xl font-bold text-gray-800">{resume.fullName}</h2>
+                                                    <p className="leading-relaxed mb-3">{resume.fullName}</p>
+                                                </div>
                                             </div>
-                                            <div className="p-6">
-                                                <h2 className="text-xl font-bold text-gray-800">{resume.fullName}</h2>
-                                                <p className="leading-relaxed mb-3">{resume.fullName}</p>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                )
-                            })}
-                        </div>
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+                        </>
                     )
             }
         </>
