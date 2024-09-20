@@ -18,12 +18,12 @@ const History = () => {
             setLoading(true);
             const res = await axios.get('/api/history', { headers: { 'Cache-Control': 'no-cache' } });
             const data = res.data;
-            setResumes(data);  // Set the fetched resumes
+            setResumes(data);  
         } catch (error) {
             console.error(error);
             toast.error('Failed to fetch resumes');
         } finally {
-            setLoading(false);  // Make sure to stop loading after fetching
+            setLoading(false);  
         }
     };
 
