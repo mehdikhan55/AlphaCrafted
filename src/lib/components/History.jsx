@@ -2,17 +2,24 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const History = () => {
     const [resumes, setResumes] = useState([])
     const [loading, setLoading] = useState(true)
 
+    const fetchRes = async () => {
+        const res = await axios.get('http://localhost:3000/api/history', { headers: { 'Cache-Control': 'no-cache' } });
+        const data = res;
+        return data.data;
+    }
+
     useEffect(() => {
         const fetchResumes = async () => {
             try {
                 setLoading(true);
-                const res = await fetch('/api/history', { cache: "no-store" });  // Disable caching here
-                const data = await res.json()
+                //make axios request with no cache
+                const data = await fetchRes();
                 console.log('fetched data: ', data);
                 setResumes(data);  // Set the resumes state
                 console.log('resuems fetched: ', resumes);
