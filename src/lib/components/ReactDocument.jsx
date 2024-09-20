@@ -1,52 +1,49 @@
-// src/components/ResumeDocument.js
-import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import React from 'react';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+
 
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
+    padding: 30,
     fontFamily: 'Helvetica',
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#FFFFFF',
   },
   section: {
-    marginBottom: 30,
-    padding: 20,
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    boxShadow: '0 1px 5px rgba(0,0,0,0.1)',
+    margin: '0 0 10px 0',
   },
   header: {
-    fontSize: 32,
+    fontSize: 24,
     marginBottom: 5,
+    textTransform: 'uppercase',
     fontWeight: 'bold',
     color: '#2c3e50',
-    borderBottom: '2px solid #2980b9',
-    paddingBottom: 10,
+    textAlign: 'center',
   },
   subheader: {
-    fontSize: 24,
-    marginBottom: 10,
-    fontWeight: 'bold',
-    color: '#2980b9',
-    borderBottom: '1px solid #ecf0f1',
-    paddingBottom: 5,
-  },
-  text: {
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 5,
     color: '#34495e',
+    borderBottom: '1px solid #bdc3c7',
+    paddingBottom: 2,
   },
-  listItem: {
-    marginBottom: 15,
+  text: {
+    fontSize: 10,
+    lineHeight: 1.5,
+    color: '#2c3e50',
+  },
+  bold: {
+    fontWeight: 'bold',
   },
   contactContainer: {
-    marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
+    borderBottom: '1px solid #bdc3c7',
+    paddingBottom: 5,
   },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
+  contactItem: {
+    fontSize: 10,
+    color: '#7f8c8d',
   },
   skillsContainer: {
     flexDirection: 'row',
@@ -54,47 +51,79 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   skill: {
-    backgroundColor: '#2980b9',
-    color: '#ffffff',
-    borderRadius: 15,
-    padding: 5,
-    margin: 3,
-    fontSize: 12,
-    textAlign: 'center',
+    backgroundColor: '#ecf0f1',
+    borderRadius: 3,
+    padding: '2px 5px',
+    margin: '0 3px 3px 0',
+    fontSize: 9,
+    color: '#2c3e50',
   },
-  footer: {
-    marginTop: 20,
+  experienceItem: {
+    marginBottom: 8,
+  },
+  experienceHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 3,
+  },
+  companyName: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+  },
+  jobTitle: {
     fontSize: 10,
-    textAlign: 'center',
+    fontStyle: 'italic',
+    color: '#34495e',
+  },
+  dateRange: {
+    fontSize: 9,
     color: '#7f8c8d',
+  },
+  bullet: {
+    width: 3,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: '#7f8c8d',
+    margin: '6px 5px 0 0',
+  },
+  bulletText: {
+    flex: 1,
   },
 });
 
 const ResumeDocument = ({ data }) => (
   <Document>
-    <Page size='A4' style={styles.page}>
+    <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        {/* Optional Logo */}
-        {data.logo && <Image style={styles.logo} src={data.logo} />}
         <Text style={styles.header}>{data.fullName}</Text>
         <View style={styles.contactContainer}>
-          <Text style={styles.text}>{data.email}</Text>
-          <Text style={styles.text}>{data.phone}</Text>
-          <Text style={styles.text}>{data.linkedinURL}</Text>
+          <Text style={styles.contactItem}>{data.email}</Text>
+          <Text style={styles.contactItem}>{data.phone}</Text>
+          <Text style={styles.contactItem}>{data.linkedinURL}</Text>
         </View>
         <Text style={styles.text}>{data.summary}</Text>
       </View>
+
       <View style={styles.section}>
-        <Text style={styles.subheader}>Experience</Text>
+        <Text style={styles.subheader}>Professional Experience</Text>
         {data.experiences.map((experience, index) => (
-          <View key={index} style={styles.listItem}>
-            <Text style={{ fontWeight: 'bold', color: '#2980b9' }}>
-              {experience.jobTitle} at {experience.company}
-            </Text>
-            <Text style={styles.text}>{experience.description}</Text>
+          <View key={index} style={styles.experienceItem}>
+            <View style={styles.experienceHeader}>
+              <View>
+                <Text style={styles.companyName}>{experience.company}</Text>
+                <Text style={styles.jobTitle}>{experience.jobTitle}</Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <View style={styles.bullet} />
+              <Text style={[styles.text, styles.bulletText]}>{experience.description}</Text>
+            </View>
           </View>
         ))}
       </View>
+
       <View style={styles.section}>
         <Text style={styles.subheader}>Skills</Text>
         <View style={styles.skillsContainer}>
@@ -103,9 +132,6 @@ const ResumeDocument = ({ data }) => (
           ))}
         </View>
       </View>
-      <Text style={styles.footer}>
-        © {new Date().getFullYear()} {data.fullName}. All rights reserved.
-      </Text>
     </Page>
   </Document>
 );
