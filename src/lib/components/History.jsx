@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { IoMdRefresh } from "react-icons/io";
 
 const History = () => {
     const [resumes, setResumes] = useState([])
@@ -50,7 +51,7 @@ const History = () => {
                     :
                     (
                         <>
-                            <button onClick={fetchResumes} className="border-t-2 border-t-slate-300 pt-4  bg-blue-500 text-white px-2 py-2 rounded">  Refresh Resumes </button>
+                            <button onClick={fetchResumes} className=" flex items-center justify-center border-t-2 border-t-slate-300 mt-4  bg-blue-500 text-white p-2 rounded-tr-xl rounded-br-xl">.<IoMdRefresh size={22} color='black' /> </button>
 
                             <div className="py-5  max-w-7xl pt-4 mx-auto grid grid-cols-2 items-start lg:grid-cols-3 px-5">
                                 {resumes.map((resume) => {
