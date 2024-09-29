@@ -4,19 +4,17 @@ import { useFieldArray } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import toast from 'react-hot-toast';
-import InputField from '@/lib/components/InputField'
-import schema from '@/lib/validationSchema'
+import InputField from './InputField'
+import schema from '../../lib/validationSchema'
+import { useUserContext } from '../../context/userContext';
 
 
 
 const InfoForm = ({
     isLoading,
     setIsLoading,
-    resumeData,
-    setResumeData,
-    generatedResume,
-    setGeneratedResume,
 }) => {
+    const { userData, userDataLoading } = useUserContext();
 
     const {
         register,
@@ -27,13 +25,18 @@ const InfoForm = ({
         resolver: yupResolver(schema),
         mode: 'onBlur',
         defaultValues: {
-            experiences: [],
-            skills: [],
+            title: '',
+            userId: '',
             fullName: '',
             email: '',
             linkedinURL: '',
             phone: '',
             summary: '',
+            experiences: [],
+            skills: [],
+            education: [],
+            projects: [],
+            certifications: [],
         },
     });
 
@@ -47,146 +50,310 @@ const InfoForm = ({
         name: 'skills',
     });
 
+    const { fields: educationFields, append: appendEducation, remove: removeEducation } = useFieldArray({
+        control,
+        name: 'education',
+    });
+
+    const { fields: projectFields, append: appendProject, remove: removeProject } = useFieldArray({
+        control,
+        name: 'projects',
+    });
+
+    const { fields: certificationFields, append: appendCertification, remove: removeCertification } = useFieldArray({
+        control,
+        name: 'certifications',
+    });
+
+
 
 
     const submitFnt = async (data) => {
         setIsLoading(true);
+        const dataToSend = {
+            title: data.title,
+            userId: userData._id,
+            data: {
+                fullName: data.fullName,
+                email: data.email,
+                linkedinURL: data.linkedinURL,
+                phone: data.phone,
+                summary: data.summary,
+                experiences: data.experiences,
+                skills: data.skills,
+                education: data.education,
+                projects: data.projects,
+                certifications: data.certifications,
+            },
+        };
+        
+        console.log("data going to submit: ", dataToSend);
+        
         try {
-            setResumeData(data);
-            
-           const res= await fetch('/api/resume', {
+            const res = await fetch('/api/resume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
-            })
+                body: JSON.stringify(dataToSend),
+            });
+            
             const responseBody = await res.json();
-            console.log("responseBody: ",responseBody)
+            console.log("responseBody: ", responseBody);
             const { resumeId } = responseBody;
-            console.log('resume id :' , resumeId)
-            //push in new tab with resume data
+            console.log('resume id :', resumeId);
+            // Push in new tab with resume data
             window.open(`/resume-preview/${resumeId}`, '_blank');
-        }
-        catch (error) {
+        } catch (error) {
             console.error(error);
             toast.error("Error generating resume");
         } finally {
             setIsLoading(false);
         }
-
     };
+    
 
     return (
-        <form onSubmit={handleSubmit(submitFnt)} noValidate style={formStyles}>
-            <InputField
-                label="Full Name"
-                name="fullName"
-                register={register}
-                required={true}
-                errors={errors.fullName?.message}
-            />
-
-            <InputField
-                label="Email"
-                name="email"
-                type="email"
-                register={register}
-                required={true}
-                errors={errors.email?.message}
-            />
-
-            <InputField
-                label="Linkedin Url"
-                name="linkedinURL"
-                register={register}
-                required={true}
-                errors={errors.linkedinURL?.message}
-            />
-
-            <InputField
-                label="Phone Number"
-                name="phone"
-                type="tel"
-                register={register}
-                required={true}
-                errors={errors.phone?.message}
-            />
-
-            <InputField
-                label="Professional Summary"
-                name="summary"
-                register={register}
-                isTextArea={true}
-                errors={errors.summary?.message}
-            />
-
-            <h3 style={sectionHeadingStyles}>Professional Experiences</h3>
-            {experienceFields.map((field, index) => (
-                <div key={field.id} style={fieldContainerStyles}>
-                    <InputField
-                        label={`Job Title ${index + 1}`}
-                        name={`experiences[${index}].jobTitle`}
-                        register={register}
-                        required={true}
-                        errors={errors.experiences?.[index]?.jobTitle?.message}
-                    />
-                    <InputField
-                        label={`Company ${index + 1}`}
-                        name={`experiences[${index}].company`}
-                        register={register}
-                        required={true}
-                        errors={errors.experiences?.[index]?.company?.message}
-                    />
-                    <InputField
-                        label={`Description ${index + 1}`}
-                        name={`experiences[${index}].description`}
-                        register={register}
-                        isTextArea={true}
-                        errors={errors.experiences?.[index]?.description?.message}
-                    />
-                    <button
-                        type="button"
-                        onClick={() => removeExperience(index)}
-                        style={removeButtonStyles}
-                    >
-                        Remove Experience
-                    </button>
-                </div>
-            ))}
-            <button type="button" onClick={() => appendExperience({})} style={addButtonStyles}>
-                Add Experience
-            </button>
-
-            <h3 style={sectionHeadingStyles}>Skills</h3>
-            <div className="grid grid-cols-2">
-                {skillFields.map((field, index) => (
-                    <div key={field.id} style={fieldContainerStyles}>
+        <>
+            {
+                userDataLoading ? (
+                    <div className="flex justify-center items-center h-screen" >
+                        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-slate-500"></div>
+                    </div >
+                ) : (
+                    <form onSubmit={handleSubmit(submitFnt)} noValidate style={formStyles}>
                         <InputField
-                            label={`Skill ${index + 1}`}
-                            name={`skills[${index}].name`}
+                            label="Resume Title"
+                            name="title"
                             register={register}
                             required={true}
-                            errors={errors.skills?.[index]?.name?.message}
+                            errors={errors.fullName?.message}
                         />
-                        <button
-                            type="button"
-                            onClick={() => removeSkill(index)}
-                            style={removeButtonStyles}
-                        >
-                            Remove Skill
-                        </button>
-                    </div>
-                ))}
-            </div>
-            <button type="button" onClick={() => appendSkill({})} style={addButtonStyles}>
-                Add Skill
-            </button>
+                        <hr />
+                        <InputField
+                            label="Full Name"
+                            name="fullName"
+                            register={register}
+                            required={true}
+                            errors={errors.fullName?.message}
+                        />
 
-            <button disabled={isLoading} type="submit" style={submitButtonStyles}>
-               {isLoading ? "Loading...": "Generate Resume"} 
-            </button>
-        </form>
+                        <InputField
+                            label="Email"
+                            name="email"
+                            type="email"
+                            register={register}
+                            required={true}
+                            errors={errors.email?.message}
+                        />
+
+                        <InputField
+                            label="Linkedin Url"
+                            name="linkedinURL"
+                            register={register}
+                            required={true}
+                            errors={errors.linkedinURL?.message}
+                        />
+
+                        <InputField
+                            label="Phone Number"
+                            name="phone"
+                            type="tel"
+                            register={register}
+                            required={true}
+                            errors={errors.phone?.message}
+                        />
+
+                        <InputField
+                            label="Professional Summary"
+                            name="summary"
+                            register={register}
+                            isTextArea={true}
+                            errors={errors.summary?.message}
+                        />
+
+                        {/* Experiences */}
+                        <h3 style={sectionHeadingStyles}>Professional Experiences</h3>
+                        {experienceFields.map((field, index) => (
+                            <div key={field.id} style={fieldContainerStyles}>
+                                <InputField
+                                    label={`Job Title ${index + 1}`}
+                                    name={`experiences[${index}].jobTitle`}
+                                    register={register}
+                                    required={true}
+                                    errors={errors.experiences?.[index]?.jobTitle?.message}
+                                />
+                                <InputField
+                                    label={`Company ${index + 1}`}
+                                    name={`experiences[${index}].company`}
+                                    register={register}
+                                    required={true}
+                                    errors={errors.experiences?.[index]?.company?.message}
+                                />
+                                <InputField
+                                    label={`Description ${index + 1}`}
+                                    name={`experiences[${index}].description`}
+                                    register={register}
+                                    isTextArea={true}
+                                    errors={errors.experiences?.[index]?.description?.message}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removeExperience(index)}
+                                    style={removeButtonStyles}
+                                >
+                                    Remove Experience
+                                </button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => appendExperience({})} style={addButtonStyles}>
+                            Add Experience
+                        </button>
+
+                        {/* Education */}
+                        <h3 style={sectionHeadingStyles}>Education</h3>
+                        {educationFields.map((field, index) => (
+                            <div key={field.id} style={fieldContainerStyles}>
+                                <InputField
+                                    label={`Degree ${index + 1}`}
+                                    name={`education[${index}].degree`}
+                                    register={register}
+                                    required={true}
+                                    errors={errors.education?.[index]?.degree?.message}
+                                />
+                                <InputField
+                                    label={`Institution ${index + 1}`}
+                                    name={`education[${index}].institution`}
+                                    register={register}
+                                    required={true}
+                                    errors={errors.education?.[index]?.institution?.message}
+                                />
+                                <InputField
+                                    label={`Description ${index + 1}`}
+                                    name={`education[${index}].description`}
+                                    register={register}
+                                    isTextArea={true}
+                                    errors={errors.education?.[index]?.description?.message}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removeEducation(index)}
+                                    style={removeButtonStyles}
+                                >
+                                    Remove Education
+                                </button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => appendEducation({})} style={addButtonStyles}>
+                            Add Education
+                        </button>
+
+                        {/* Projects */}
+                        <h3 style={sectionHeadingStyles}>Projects</h3>
+                        {projectFields.map((field, index) => (
+                            <div key={field.id} style={fieldContainerStyles}>
+                                <InputField
+                                    label={`Title ${index + 1}`}
+                                    name={`projects[${index}].title`}
+                                    register={register}
+                                    required={true}
+                                    errors={errors.projects?.[index]?.title?.message}
+                                />
+                                <InputField
+                                    label={`Description ${index + 1}`}
+                                    name={`projects[${index}].description`}
+                                    register={register}
+                                    required={true}
+                                    isTextArea={true}
+                                    errors={errors.projects?.[index]?.description?.message}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removeProject(index)}
+                                    style={removeButtonStyles}
+                                >
+                                    Remove Project
+                                </button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => appendProject({})} style={addButtonStyles}>
+                            Add Project
+                        </button>
+
+                        {/* Certifications */}
+                        <h3 style={sectionHeadingStyles}>Certifications</h3>
+                        {certificationFields.map((field, index) => (
+                            <div key={field.id} style={fieldContainerStyles}>
+                                <InputField
+                                    label={`Title ${index + 1}`}
+                                    name={`certifications[${index}].name`}
+                                    register={register}
+                                    required={true}
+                                    errors={errors.certifications?.[index]?.name?.message}
+                                />
+                                <InputField
+                                    label={`Authority ${index + 1}`}
+                                    name={`certifications[${index}].authority`}
+                                    register={register}
+                                    required={true}
+                                    errors={errors.certifications?.[index]?.authority?.message}
+                                />
+                                <InputField
+                                    label={`Description ${index + 1}`}
+                                    name={`certifications[${index}].description`}
+                                    register={register}
+                                    required={true}
+                                    isTextArea={true}
+                                    errors={errors.certifications?.[index]?.description?.message}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removeCertification(index)}
+                                    style={removeButtonStyles}
+                                >
+                                    Remove Certification
+                                </button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => appendCertification({})} style={addButtonStyles}>
+                            Add Certification
+                        </button>
+
+                        {/* Skills  */}
+                        <h3 style={sectionHeadingStyles}>Skills</h3>
+                        <div className="grid grid-cols-2">
+                            {skillFields.map((field, index) => (
+                                <div key={field.id} style={fieldContainerStyles}>
+                                    <InputField
+                                        label={`Skill ${index + 1}`}
+                                        name={`skills[${index}].name`}
+                                        register={register}
+                                        required={true}
+                                        errors={errors.skills?.[index]?.name?.message}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeSkill(index)}
+                                        style={removeButtonStyles}
+                                    >
+                                        Remove Skill
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <button type="button" onClick={() => appendSkill({})} style={addButtonStyles}>
+                            Add Skill
+                        </button>
+
+
+
+
+                        <button disabled={isLoading} type="submit" style={submitButtonStyles}>
+                            {isLoading ? "Loading..." : "Generate Resume"}
+                        </button>
+                    </form>
+                )}
+        </>
     )
 }
 

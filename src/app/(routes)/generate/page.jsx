@@ -1,14 +1,12 @@
 'use client'
 
-import InfoForm from '@/lib/components/InfoForm';
-import Navbar from '@/lib/components/Navbar';
+import Navbar from '../../../lib/components/Navbar'
+import InfoForm from '../../../lib/components/InfoForm'
 import React, { useState } from 'react'
 
 const GenerateResume = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [resumeData, setResumeData] = useState(null);
-  const [generatedResume, setGeneratedResume] = useState(null);
-
+  
   return (
     <>
       <Navbar />
@@ -17,10 +15,6 @@ const GenerateResume = () => {
         <InfoForm
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          resumeData={resumeData}
-          setResumeData={setResumeData}
-          generatedResume={generatedResume}
-          setGeneratedResume={setGeneratedResume}
         />
       </div>
     </>

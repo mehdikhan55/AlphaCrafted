@@ -1,7 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
-
 const styles = StyleSheet.create({
   page: {
     padding: 30,
@@ -58,21 +57,21 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: '#2c3e50',
   },
-  experienceItem: {
+  item: {
     marginBottom: 8,
   },
-  experienceHeader: {
+  itemHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 3,
   },
-  companyName: {
+  itemTitle: {
     fontSize: 11,
     fontWeight: 'bold',
     color: '#2c3e50',
   },
-  jobTitle: {
+  itemSubtitle: {
     fontSize: 10,
     fontStyle: 'italic',
     color: '#34495e',
@@ -93,6 +92,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const BulletItem = ({ children }) => (
+  <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+    <View style={styles.bullet} />
+    <Text style={[styles.text, styles.bulletText]}>{children}</Text>
+  </View>
+);
+
 const ResumeDocument = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -109,17 +115,56 @@ const ResumeDocument = ({ data }) => (
       <View style={styles.section}>
         <Text style={styles.subheader}>Professional Experience</Text>
         {data.experiences.map((experience, index) => (
-          <View key={index} style={styles.experienceItem}>
-            <View style={styles.experienceHeader}>
+          <View key={index} style={styles.item}>
+            <View style={styles.itemHeader}>
               <View>
-                <Text style={styles.companyName}>{experience.company}</Text>
-                <Text style={styles.jobTitle}>{experience.jobTitle}</Text>
+                <Text style={styles.itemTitle}>{experience.company}</Text>
+                <Text style={styles.itemSubtitle}>{experience.jobTitle}</Text>
               </View>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-              <View style={styles.bullet} />
-              <Text style={[styles.text, styles.bulletText]}>{experience.description}</Text>
+            {experience.description &&
+            <BulletItem>{experience.description}</BulletItem>
+          }
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.subheader}>Education</Text>
+        {data.education.map((edu, index) => (
+          <View key={index} style={styles.item}>
+            <View style={styles.itemHeader}>
+              <Text style={styles.itemTitle}>{edu.institution}</Text>
+              <Text style={styles.itemSubtitle}>{edu.degree}</Text>
             </View>
+            {edu.description &&
+            <BulletItem>{edu.description}</BulletItem>
+          }
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.subheader}>Projects</Text>
+        {data.projects.map((project, index) => (
+          <View key={index} style={styles.item}>
+            <Text style={styles.itemTitle}>{project.title}</Text>
+            {project.description &&
+            <BulletItem>{project.description}</BulletItem>
+          }
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.subheader}>Certifications</Text>
+        {data.certifications.map((cert, index) => (
+          <View key={index} style={styles.item}>
+            <Text style={styles.itemTitle}>{cert.name}</Text>
+            <Text style={styles.itemSubtitle}>{cert.authority}</Text>
+            {cert.description &&
+            <BulletItem>{cert.description}</BulletItem>
+          }
           </View>
         ))}
       </View>

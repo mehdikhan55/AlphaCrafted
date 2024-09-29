@@ -1,5 +1,5 @@
 'use client'
-import ResumeDocument from '@/lib/components/ReactDocument'
+import ResumeDocument from '../../../../lib/components/ReactDocument'
 import { PDFViewer } from '@react-pdf/renderer'
 import React, { useEffect, useState } from 'react'
 
@@ -17,7 +17,8 @@ const page = ({ params }) => {
       try {
         const res = await fetch('/api/resume?id=' + resumeId);
         const { resume } = await res.json();
-        setData(resume);
+        console.log(resume)
+        setData(resume.data);
         console.log(resume)
       } catch (err) {
         //alert the error to the user

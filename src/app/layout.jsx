@@ -1,6 +1,10 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { UserProvider } from '../context/userContext'
+import MainContent from './MainContent'
 import { Toaster } from "react-hot-toast";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -19,13 +23,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-       <Toaster/>
-      </body>
-    </html>
+    <ClerkProvider>
+      <UserProvider>
+        <html lang="en" data-theme="light">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <MainContent children={children} />
+            <Toaster />
+          </body>
+        </html>
+
+      </UserProvider>
+    </ClerkProvider>
   );
 }
+
+

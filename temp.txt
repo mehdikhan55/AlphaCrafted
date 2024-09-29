@@ -1,0 +1,61 @@
+import React from 'react';
+
+const ResumeCard = ({ resume, user }) => {
+  const { title, data } = resume;
+  const { fullName, email, linkedinURL, phone, summary, experiences, skills, education } = data;
+
+  return (
+    <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-4">
+      <div className="p-8">
+        <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{title}</div>
+        <h2 className="block mt-1 text-lg leading-tight font-medium text-black">{fullName}</h2>
+        <div className="mt-4 flex items-center">
+          <img className="h-12 w-12 rounded-full mr-4" src={user.imageUrl} alt={user.fullName} />
+          <div>
+            <p className="text-sm font-medium text-gray-900">{user.fullName}</p>
+            <p className="text-sm text-gray-500">{user.email}</p>
+          </div>
+        </div>
+        <div className="mt-4 text-gray-500">
+          <p>{email} | {phone}</p>
+          <a href={linkedinURL} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+        </div>
+        <p className="mt-2 text-gray-500">{summary}</p>
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          <div>
+            <h3 className="font-bold text-gray-700">Experience</h3>
+            <ul className="list-disc list-inside">
+              {experiences.map((exp, index) => (
+                <li key={index} className="mt-1">
+                  {exp.jobTitle} at {exp.company}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-bold text-gray-700">Education</h3>
+            <ul className="list-disc list-inside">
+              {education.map((edu, index) => (
+                <li key={index} className="mt-1">
+                  {edu.degree} from {edu.institution}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="mt-4">
+          <h3 className="font-bold text-gray-700">Skills</h3>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {skills.map((skill, index) => (
+              <span key={index} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+                {skill.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ResumeCard;
