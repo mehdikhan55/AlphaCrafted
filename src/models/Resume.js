@@ -102,6 +102,18 @@ const ResumeSchema = new mongoose.Schema(
             ref: 'User', // Reference to the User model
             required: true,
         },
+        userFullName:{
+            type: String,
+            required: true,
+        },
+        userImageUrl:{
+            type: String,
+            required: true,
+        },
+        userEmail:{
+            type: String,
+            required: true,
+        },
         isPublic: {
             type: Boolean,
             default: false,

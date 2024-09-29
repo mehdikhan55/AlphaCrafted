@@ -73,6 +73,9 @@ const InfoForm = ({
         const dataToSend = {
             title: data.title,
             userId: userData._id,
+            userFullName: userData.fullName,
+            userImageUrl: userData.imageUrl,
+            userEmail: userData.email,
             data: {
                 fullName: data.fullName,
                 email: data.email,
@@ -87,7 +90,7 @@ const InfoForm = ({
             },
         };
         
-        console.log("data going to submit: ", dataToSend);
+        //console.log("data going to submit: ", dataToSend);
         
         try {
             const res = await fetch('/api/resume', {
@@ -99,9 +102,9 @@ const InfoForm = ({
             });
             
             const responseBody = await res.json();
-            console.log("responseBody: ", responseBody);
+            //console.log("responseBody: ", responseBody);
             const { resumeId } = responseBody;
-            console.log('resume id :', resumeId);
+            //console.log('resume id :', resumeId);
             // Push in new tab with resume data
             window.open(`/resume-preview/${resumeId}`, '_blank');
         } catch (error) {

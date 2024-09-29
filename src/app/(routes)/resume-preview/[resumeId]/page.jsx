@@ -17,9 +17,9 @@ const page = ({ params }) => {
       try {
         const res = await fetch('/api/resume?id=' + resumeId);
         const { resume } = await res.json();
-        console.log(resume)
+        //console.log(resume)
         setData(resume.data);
-        console.log(resume)
+        //console.log(resume)
       } catch (err) {
         //alert the error to the user
         alert('Error fetching resume');

@@ -9,7 +9,7 @@ export default function Home() {
   const {userData} = useUserContext();
 
   useEffect(()=>{
-    console.log('user data is : ',userData);
+    //console.log('user data is : ',userData);
   })
 
   return (

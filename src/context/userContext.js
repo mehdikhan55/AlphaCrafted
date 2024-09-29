@@ -25,10 +25,10 @@ export const UserProvider = ({ children }) => {
         try {
           const savedUser = await saveUserData(newUser);
           setUserData(() => savedUser);
-          console.log('saved user data....:', userData);
+          //console.log('saved user data....:', userData);
         } catch (error) {
           setUserFetchingError(error.message);
-          console.log('error ye h:', error.message);
+          //console.log('error ye h:', error.message);
           console.error("Error saving user data:", error);
           toast.error(`Error fetching user data (Might be network issue, try refreshing)`);
         }
@@ -39,8 +39,8 @@ export const UserProvider = ({ children }) => {
     };
     setUserDataLoading(true);
     fetchUserData();
-    console.log('fetchUserData called');
-    console.log('got user data:', userData);
+    //console.log('fetchUserData called');
+    //console.log('got user data:', userData);
   }, [user]);
 
 

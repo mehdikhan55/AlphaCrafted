@@ -4,9 +4,9 @@ import User from "../models/User";
 import dbConnect from '../lib/dbConnect';
 
 export const saveUserData = async (user) => {
-    console.log('saveUserData called')
+    //console.log('saveUserData called')
     const { fullName, email, imageUrl } = user;
-    // console.log("user recieved in saveUserData", user)
+    //console.log("user recieved in saveUserData", user)
     await dbConnect();
     try {
         
@@ -40,10 +40,10 @@ export const saveUserData = async (user) => {
             updatedAt: result.updatedAt
         };
 
-        console.log('good work');
+        //console.log('good work');
         return plainObject;
     }catch (error) {
-        console.log('Error saving user data (in user actions):', error.message);
+        //console.log('Error saving user data (in user actions):', error.message);
         throw new Error(`Error saving user data: ${error.message}`);
     }
 }

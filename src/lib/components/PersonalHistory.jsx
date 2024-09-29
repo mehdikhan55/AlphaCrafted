@@ -20,7 +20,7 @@ const History = () => {
     const fetchResumes = async () => {
         try {
             setLoading(true);
-            console.log('user id ye ha in personal history', userData._id);
+            //console.log('user id ye ha in personal history', userData._id);
             const res = await axios.get('/api/personal-history', {
                 headers: {
                     'Cache-Control': 'no-cache',
@@ -47,7 +47,7 @@ const History = () => {
 
 
     useEffect(() => {
-        console.log('Updated resumes: ', resumes);
+        //console.log('Updated resumes: ', resumes);
     }, [resumes]);
 
 
@@ -97,8 +97,12 @@ const History = () => {
                                 {resumes.map((resume) => {
                                     //make a card
                                     return (
-                                        <div key={resume._id} className='' >
-                                            <ResumeCard resume={resume} user={userData} />
+                                        <div key={resume._id} href={`/resume-preview/${resume._id}`} target="_blank" className='' >
+                                            <ResumeCard 
+                                            resume={resume} 
+                                            user={userData} 
+                                            fetchPersonalHistory={fetchResumes}
+                                            />
                                             {/* <div className="bg-white shadow-xl rounded-lg mx-4 my-4 border border-slate-200">
                                                 <div className="h-40 overflow-hidden">
                                                 </div>

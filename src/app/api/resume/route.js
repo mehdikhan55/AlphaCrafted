@@ -4,14 +4,14 @@ import Resume from  '/src/models/Resume';
 import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
-    console.log('POST request to /api/resume');
+    //console.log('POST request to /api/resume');
     await dbConnect();
     try {
         const resumeData= await req.json();
-        console.log('resumeData:', resumeData);
+        //console.log('resumeData:', resumeData);
         const savedResume = new Resume(resumeData);
         await savedResume.save();
-        console.log('saved resume : ', savedResume)
+        //console.log('saved resume : ', savedResume)
         return NextResponse.json({ resumeId: savedResume._id }, { status: 200 });
     } catch (err) {
         console.error('API route error:', err);
@@ -20,11 +20,11 @@ export const POST = async (req) => {
 }
 
 export const PUT = async (req) => {
-    console.log('PUT request to /api/resume');
+    //console.log('PUT request to /api/resume');
     await dbConnect();
     try {
         const resumeData = await req.json();
-        console.log('resumeData:', resumeData);
+        //console.log('resumeData:', resumeData);
         
         // Check if the resume ID is provided
         if (!resumeData._id) {
@@ -39,7 +39,7 @@ export const PUT = async (req) => {
             return NextResponse.json({ error: 'Resume not found' }, { status: 404 });
         }
 
-        console.log('updated resume:', updatedResume);
+        //console.log('updated resume:', updatedResume);
         return NextResponse.json({ resumeId: updatedResume._id }, { status: 200 });
     } catch (err) {
         console.error('API route error:', err);
@@ -59,6 +59,29 @@ export const GET = async (req) => {
             return NextResponse.json({ error: 'Resume not found' }, { status: 404 });
         }
         return NextResponse.json({ resume }, { status: 200 });
+    } catch (err) {
+        console.error('API route error:', err);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
+}
+
+
+export const DELETE = async (req) => {
+    //console.log('DELETE request to /api/resume');
+    const { searchParams } = new URL(req.url);
+    const resumeId = searchParams.get('id'); // Retrieve ID from query params
+
+    await dbConnect();
+    try {
+        if (!resumeId) {
+            return NextResponse.json({ error: 'Resume ID is required' }, { status: 400 });
+        }
+        const deletedResume = await Resume.findByIdAndDelete(resumeId);
+        if (!deletedResume) {
+            return NextResponse.json({ error: 'Resume not found' }, { status: 404 });
+        }
+        //console.log('deleted resume:', deletedResume);
+        return NextResponse.json({ resumeId: deletedResume._id }, { status: 200 });
     } catch (err) {
         console.error('API route error:', err);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

@@ -79,6 +79,9 @@ const EditForm = ({
             title: data.title,
             userId: userData._id,
             isPublic: isPublic,
+            userFullName: userData.fullName,
+            userImageUrl: userData.imageUrl,
+            userEmail: userData.email,
             data: {
                 fullName: data.fullName,
                 email: data.email,
@@ -92,7 +95,7 @@ const EditForm = ({
                 certifications: data.certifications,
             },
         };
-
+        //console.log('data going to to send for edit:', dataToSend);
 
         try {
             const res = await fetch('/api/resume', {
@@ -104,9 +107,9 @@ const EditForm = ({
             });
 
             const responseBody = await res.json();
-            console.log("responseBody: ", responseBody);
+            //console.log("responseBody: ", responseBody);
             const { resumeId } = responseBody;
-            console.log('resume id :', resumeId);
+            //console.log('resume id :', resumeId);
             // Push in new tab with resume data
             await fetchResume();
             window.open(`/resume-preview/${resumeId}`, '_blank');

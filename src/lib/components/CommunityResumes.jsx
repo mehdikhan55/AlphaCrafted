@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import axios from 'axios'
@@ -20,7 +19,6 @@ const CommunityResumes= () => {
     const fetchResumes = async () => {
         try {
             setLoading(true);
-            console.log('user id ye ha in personal history', userData._id);
             const res = await axios.get('/api/community-resumes', {
                 headers: {
                     'Cache-Control': 'no-cache',
@@ -37,16 +35,14 @@ const CommunityResumes= () => {
     };
 
     useEffect(() => {
-        if(userData){
+
         fetchResumes();
-        }else{
-            setLoading(false);
-        }
+ 
     }, []);
 
 
     useEffect(() => {
-        console.log('Updated resumes: ', resumes);
+        //console.log('Updated resumes: ', resumes);
     }, [resumes]);
 
 
@@ -70,13 +66,6 @@ const CommunityResumes= () => {
                     </div>
                     
                 )
-                :
-                (!userData) ? (
-                    <div className="flex flex-col justify-center items-center ">
-                        <h3 className="text-xl font-bold text-gray-800 pb-1">Please sign in to view your resumes</h3>
-                        <Button title="Sign in" path="/sign-in "/>
-                    </div>
-                ) 
                 :
                 (
                 (loading) ? (
