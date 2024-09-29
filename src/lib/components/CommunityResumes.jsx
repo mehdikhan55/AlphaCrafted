@@ -96,7 +96,7 @@ const CommunityResumes= () => {
                                 {resumes.map((resume) => {
                                     //make a card
                                     return (
-                                        <Link key={resume._id} href={`/resume-preview/${resume._id}`} target="_blank" >
+                                        <div key={resume._id}  >
                                             <ResumeCard 
                                             showPublicity={false} 
                                             showEditOption={false}
@@ -110,7 +110,7 @@ const CommunityResumes= () => {
                                                     <p className="leading-relaxed mb-3">{resume.fullName}</p>
                                                 </div>
                                             </div> */}
-                                        </Link>
+                                        </div>
                                     )
                                 })}
                                 

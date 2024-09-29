@@ -3,15 +3,16 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { FaEnvelope, FaLinkedin } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
+import { IoMdShare } from 'react-icons/io';
 
-const ResumeCard = ({ resume, user, showPublicity=true , showEditOption=true }) => {
+const ResumeCard = ({ resume, user, showPublicity = true, showEditOption = true }) => {
   const { title, data } = resume;
   const { fullName, email, linkedinURL, phone, summary, experiences, skills, education } = data;
 
-  const handleEmailClick = () => {
+  const handleShareClick = () => {
     //copy to clipboard
-    navigator.clipboard.writeText(email);
-    toast.success('Email copied to clipboard');
+    navigator.clipboard.writeText(`${window.location.origin}/resume-preview/${resume._id}`);
+    toast.success('Link copied to clipboard');
   }
 
   return (
@@ -19,18 +20,15 @@ const ResumeCard = ({ resume, user, showPublicity=true , showEditOption=true }) 
       <div className="p-8 ">
 
         <div className="flex justify-between">
-          <div className="">
-        <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{title}</div>
-        <h2 className="block mt-1 text-lg leading-tight font-medium text-black">{fullName}</h2>
-        </div>
-        <div className=" text-gray-500">
-          <Link href={linkedinURL} className="text-indigo-500 text-lg hover:underline" target="_blank" rel="noopener noreferrer"><FaLinkedin/></Link>
-        </div>
+          <Link  href={`/resume-preview/${resume._id}`} target="_blank">
+            <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{title}</div>
+            <h2 className="block mt-1 text-lg leading-tight font-medium text-black">{fullName}</h2>
+          </Link>
 
         </div>
-        <div className="mt-4 text-gray-500">
-          <p onClick={handleEmailClick} className="text-gray-700 text-lg ">
-            <FaEnvelope className='inline-block mr-1 text-sm'/>
+        <div className="mt-4 text-gray-500 mb-4">
+          <p  className="text-gray-700 text-lg ">
+            <FaEnvelope className='inline-block mr-1 text-sm' />
             <span className='text-sm'>{email}</span>
           </p>
         </div>
@@ -43,10 +41,13 @@ const ResumeCard = ({ resume, user, showPublicity=true , showEditOption=true }) 
           </div>
         </div>
       </div>
+      <div className="absolute top-2 right-2 flex gap-1 z-10">
+      <Link href={linkedinURL} className="text-indigo-500 text-lg hover:underline" target="_blank" rel="noopener noreferrer"><FaLinkedin /></Link>
+        {showEditOption && <Link href={`/edit/${resume._id}`} target='_blank' className="text-slate-700 text-lg " rel="noopener noreferrer"><CiEdit /></Link>}
+        <button onClick={handleShareClick} className="text-slate-700 text-lg " rel="noopener noreferrer"><IoMdShare /></button>
+      </div>
 
-      {showEditOption && <Link href={`/edit/${resume._id}`} target='_blank' className="text-slate-700 text-lg absolute top-3 right-2"  rel="noopener noreferrer"><CiEdit /></Link>}
-
-      {showPublicity && <p  className="text-slate-700 text-xs absolute bottom-3 right-2" >{`${resume.isPublic ? '(Public)':'(Private)'}`}</p>}
+      {showPublicity && <p className="text-slate-700 text-xs absolute bottom-3 right-2" >{`${resume.isPublic ? '(Public)' : '(Private)'}`}</p>}
     </div>
   );
 };

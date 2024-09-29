@@ -34,7 +34,9 @@ const page = ({ params }) => {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-slate-500"></div>
+    </div>
       ) : (
         <div style={{ width: '100vw', height: '100vh', margin: 0, padding: 0 }}>
           <PDFViewer style={{ width: '100%', height: '100%' }}>

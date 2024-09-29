@@ -97,7 +97,7 @@ const History = () => {
                                 {resumes.map((resume) => {
                                     //make a card
                                     return (
-                                        <Link key={resume._id} href={`/resume-preview/${resume._id}`} target="_blank" >
+                                        <div key={resume._id} className='' >
                                             <ResumeCard resume={resume} user={userData} />
                                             {/* <div className="bg-white shadow-xl rounded-lg mx-4 my-4 border border-slate-200">
                                                 <div className="h-40 overflow-hidden">
@@ -107,7 +107,7 @@ const History = () => {
                                                     <p className="leading-relaxed mb-3">{resume.fullName}</p>
                                                 </div>
                                             </div> */}
-                                        </Link>
+                                        </div>
                                     )
                                 })}
                                 
