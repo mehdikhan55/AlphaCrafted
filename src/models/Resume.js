@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import User from './User.js';
 
 // UserProfileSchema to hold individual profile data for each resume
 const UserProfileSchema = new mongoose.Schema(

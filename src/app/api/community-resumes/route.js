@@ -10,7 +10,7 @@ export const GET = async (req) => {
         const resumes = await Resume.find({ isPublic: true }).sort({ createdAt: -1 }).populate('userId');
         return NextResponse.json(resumes, { status: 200 });
     } catch (err) {
-        console.error('API route error:', err);
+        console.error('API route error in community resumes api:', err);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 };
