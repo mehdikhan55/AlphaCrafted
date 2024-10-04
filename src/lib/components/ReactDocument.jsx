@@ -105,11 +105,12 @@ const ResumeDocument = ({ data }) => (
       <View style={styles.section}>
         <Text style={styles.header}>{data.fullName}</Text>
         <View style={styles.contactContainer}>
-          <Text style={styles.contactItem}>{data.email}</Text>
-          <Text style={styles.contactItem}>{data.phone}</Text>
-          <Text style={styles.contactItem}>{data.linkedinURL}</Text>
+          <Text style={styles.contactItem}>{data.email || ''}</Text>
+          <Text style={styles.contactItem}>{data.phone || ''}</Text>
+          <Text style={styles.contactItem}>{data.linkedinURL || ''}</Text>
+
         </View>
-        <Text style={styles.text}>{data.summary}</Text>
+        <Text style={styles.text}>{data.summary || ''}</Text>
       </View>
 
       <View style={styles.section}>
@@ -118,13 +119,13 @@ const ResumeDocument = ({ data }) => (
           <View key={index} style={styles.item}>
             <View style={styles.itemHeader}>
               <View>
-                <Text style={styles.itemTitle}>{experience.company}</Text>
-                <Text style={styles.itemSubtitle}>{experience.jobTitle}</Text>
+                <Text style={styles.itemTitle}>{experience.company || ''}</Text>
+                <Text style={styles.itemSubtitle}>{experience.jobTitle || ''}</Text>
               </View>
             </View>
-            {experience.description &&
-            <BulletItem>{experience.description}</BulletItem>
-          }
+            {experience.description && experience.description.trim() !== '' && (
+              <BulletItem>{experience.description}</BulletItem>
+            )}
           </View>
         ))}
       </View>
@@ -134,12 +135,12 @@ const ResumeDocument = ({ data }) => (
         {data.education.map((edu, index) => (
           <View key={index} style={styles.item}>
             <View style={styles.itemHeader}>
-              <Text style={styles.itemTitle}>{edu.institution}</Text>
-              <Text style={styles.itemSubtitle}>{edu.degree}</Text>
+              <Text style={styles.itemTitle}>{edu.institution || ''}</Text>
+              <Text style={styles.itemSubtitle}>{edu.degree || ''}</Text>
             </View>
-            {edu.description &&
-            <BulletItem>{edu.description}</BulletItem>
-          }
+            {edu.description && edu.description.trim() !== '' && (
+              <BulletItem>{edu.description}</BulletItem>
+            )}
           </View>
         ))}
       </View>
@@ -149,9 +150,9 @@ const ResumeDocument = ({ data }) => (
         {data.projects.map((project, index) => (
           <View key={index} style={styles.item}>
             <Text style={styles.itemTitle}>{project.title}</Text>
-            {project.description &&
-            <BulletItem>{project.description}</BulletItem>
-          }
+            {project.description && project.description.trim() !== '' && (
+              <BulletItem>{project.description}</BulletItem>
+            )}
           </View>
         ))}
       </View>
@@ -162,9 +163,9 @@ const ResumeDocument = ({ data }) => (
           <View key={index} style={styles.item}>
             <Text style={styles.itemTitle}>{cert.name}</Text>
             <Text style={styles.itemSubtitle}>{cert.authority}</Text>
-            {cert.description &&
-            <BulletItem>{cert.description}</BulletItem>
-          }
+            {cert.description && cert.description.trim() !== '' && (
+              <BulletItem>{cert.description}</BulletItem>
+            )}
           </View>
         ))}
       </View>
