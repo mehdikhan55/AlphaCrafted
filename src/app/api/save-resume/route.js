@@ -11,7 +11,7 @@ export const GET = async (req) => {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/api/resume?id=${resumeId}`);
+        const response = await fetch(`/api/resume?id=${resumeId}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
