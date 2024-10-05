@@ -11,7 +11,7 @@ const Navbar = () => {
     <nav className='mx-auto border-b-stone-300 border-2'>
       <div className=' max-w-7xl mx-auto  flex justify-between items-center px-4 py-2'>
         <Link href={'/'}>
-          <h1 className=' font-bold text-xl '>@lpha<span className='text-primary text-4xl'>.</span></h1>
+          <h1 className=' font-bold text-xl '>@lphaCrafted<span className='text-primary text-4xl'>.</span></h1>
         </Link>
         <div className="flex items-center justify-center">
           <Button title='Create Resume' path='/generate' />
